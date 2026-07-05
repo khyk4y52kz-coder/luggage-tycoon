@@ -8,6 +8,9 @@ const steamAppId = process.env.STEAM_APP_ID || process.env.STEAM_TEST_APP_ID;
 let mainWindow = null;
 
 function getIndexPath() {
+  if (app.isPackaged) {
+    return path.join(__dirname, "../dist/index.html");
+  }
   return path.join(__dirname, "../../../../.steam-build/dist/index.html");
 }
 
