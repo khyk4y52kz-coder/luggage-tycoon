@@ -9,7 +9,6 @@ const AUTO_INTERVAL_MS = 4000;
 export default function HowToPlayDemo({ onClose }) {
   const { t, lang, demoSteps } = useLanguage();
   const products = buildProducts(lang);
-  const upgrades = buildUpgrades(lang);
   const [step, setStep] = useState(0);
   const [playing, setPlaying] = useState(false);
 

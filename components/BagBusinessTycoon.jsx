@@ -205,16 +205,16 @@ export default function BagBusinessTycoon() {
         textAlign: "center", padding: "10px 0 6px", borderBottom: "2px solid #5a4a32",
         marginBottom: 10, letterSpacing: 2, position: "relative",
       }}>
-        <div style={{
-          position: "absolute", right: 0, top: 8,
-          display: "flex", gap: 6, alignItems: "center",
-        }}>
-          <button
-            onClick={() => setShowDemo(true)}
-            style={{ ...btnStyle("#2a2518"), fontSize: 10, padding: "4px 8px", letterSpacing: 0 }}
-          >
-            {t.howToPlay}
-          </button>
+        <button
+          onClick={() => setShowDemo(true)}
+          style={{
+            ...btnStyle("#2a2518"), position: "absolute", left: 0, top: 8,
+            fontSize: 10, padding: "4px 8px", letterSpacing: 0,
+          }}
+        >
+          {t.howToPlay}
+        </button>
+        <div style={{ position: "absolute", right: 0, top: 8 }}>
           <LanguageToggle />
         </div>
         <h1 style={{ margin: 0, fontSize: 22, color: "#c9a96e", textTransform: "uppercase" }}>
