@@ -1,31 +1,53 @@
 const { app, BrowserWindow } = require("electron");
 const path = require("path");
+const { initSteamworks } = require("./steam.cjs");
 
 const isDev = process.env.NODE_ENV === "development";
+const steamAppId = process.env.STEAM_APP_ID || process.env.STEAM_TEST_APP_ID;
+
+let mainWindow = null;
+
+function getIndexPath() {
+  return path.join(__dirname, "../dist/index.html");
+}
 
 function createWindow() {
-  const win = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 960,
     height: 860,
     minWidth: 640,
     minHeight: 720,
     title: "Bag Business Tycoon",
     backgroundColor: "#0e0c0a",
+    show: false,
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,
     },
   });
 
+  mainWindow.once("ready-to-show", () => {
+    mainWindow.show();
+  });
+
+  mainWindow.webContents.on("did-fail-load", (_event, code, description, url) => {
+    console.error(`[electron] Failed to load ${url}: ${code} ${description}`);
+  });
+
   if (isDev) {
-    win.loadURL("http://localhost:5173");
-    win.webContents.openDevTools({ mode: "detach" });
+    mainWindow.loadURL("http://localhost:5173");
+    mainWindow.webContents.openDevTools({ mode: "detach" });
   } else {
-    win.loadFile(path.join(__dirname, "../dist/index.html"));
+    const indexPath = getIndexPath();
+    console.log(`[electron] Loading production build: ${indexPath}`);
+    mainWindow.loadFile(indexPath);
   }
 }
 
-app.whenReady().then(createWindow);
+app.whenReady().then(() => {
+  initSteamworks(steamAppId);
+  createWindow();
+});
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();

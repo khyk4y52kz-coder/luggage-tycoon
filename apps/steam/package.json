@@ -1,12 +1,18 @@
 {
   "name": "@luggage-tycoon/steam",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
+  "description": "Bag Business Tycoon — Steam desktop build",
+  "author": "Bag Business Tycoon",
   "main": "electron/main.cjs",
   "scripts": {
     "dev": "concurrently -k \"vite\" \"wait-on http://localhost:5173 && cross-env NODE_ENV=development electron .\"",
     "build": "vite build",
-    "start": "electron ."
+    "start": "cross-env NODE_ENV=production electron .",
+    "start:prod": "npm run build && cross-env NODE_ENV=production electron .",
+    "package": "npm run build && electron-builder --publish never",
+    "package:dir": "npm run build && electron-builder --dir --publish never",
+    "verify:dist": "node scripts/verify-dist.mjs"
   },
   "dependencies": {
     "@luggage-tycoon/game-core": "*",
@@ -18,8 +24,50 @@
     "@vitejs/plugin-react": "^4.3.4",
     "concurrently": "^9.1.2",
     "cross-env": "^7.0.3",
-    "electron": "^34.2.0",
+    "electron": "34.5.8",
+    "electron-builder": "^25.1.8",
     "vite": "^6.2.0",
     "wait-on": "^8.0.2"
+  },
+  "build": {
+    "electronVersion": "34.5.8",
+    "npmRebuild": false,
+    "buildDependenciesFromSource": false,
+    "appId": "com.luggagetycoon.game",
+    "productName": "Bag Business Tycoon",
+    "copyright": "Copyright © 2026 Bag Business Tycoon",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "package.json"
+    ],
+    "asar": true,
+    "mac": {
+      "category": "public.app-category.games",
+      "target": [
+        "dmg",
+        "zip"
+      ]
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Game"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
   }
 }

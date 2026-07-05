@@ -1,6 +1,6 @@
 {
   "name": "luggage-tycoon-monorepo",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "private": true,
   "workspaces": [
     "apps/*",
@@ -11,6 +11,9 @@
     "build:web": "npm run build -w @luggage-tycoon/web",
     "start:web": "npm run start -w @luggage-tycoon/web",
     "dev:steam": "npm run dev -w @luggage-tycoon/steam",
-    "build:steam": "npm run build -w @luggage-tycoon/steam"
+    "build:steam": "npm run package -w @luggage-tycoon/steam",
+    "package:steam": "npm run package -w @luggage-tycoon/steam",
+    "test": "npm run test -w @luggage-tycoon/game-core",
+    "test:game-core": "npm run test -w @luggage-tycoon/game-core"
   }
 }
