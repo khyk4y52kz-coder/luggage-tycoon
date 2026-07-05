@@ -21,7 +21,7 @@ function createWindow() {
     minWidth: 640,
     minHeight: 720,
     title: "The Little Bag Factory",
-    backgroundColor: "#0e0c0a",
+    backgroundColor: "#1c1814",
     show: false,
     webPreferences: {
       contextIsolation: true,

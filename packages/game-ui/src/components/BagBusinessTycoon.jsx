@@ -4,7 +4,9 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import HowToPlayDemo from "./HowToPlayDemo";
 import SplashScreen from "./SplashScreen";
 import LanguageToggle from "./LanguageToggle";
+import SoundToggle from "./SoundToggle";
 import { useLanguage } from "./LanguageProvider";
+import { playGameSound } from "../audio/gameSounds.js";
 import {
   DEMO_STORAGE_KEY,
   createInitialState,
@@ -51,14 +53,17 @@ export default function BagBusinessTycoon() {
   const addLog = useCallback((msg) => setLog((l) => [...l.slice(-80), msg]), []);
 
   const craft = (key) => {
+    const p = products[key];
+    const eff = getSkill(game);
+    const cost = Math.round(p.cost * getCostMod(game));
+    const busy = game.crafting && !canParallelCraft(game);
+    const full = game.crafting && canParallelCraft(game) && game.crafting.length >= 2;
+    if (eff < p.skill || game.money < cost || busy || full) {
+      playGameSound("deny");
+      return;
+    }
+    playGameSound("craft");
     setGame((g) => {
-      const p = products[key];
-      const eff = getSkill(g);
-      if (eff < p.skill) return g;
-      const cost = Math.round(p.cost * getCostMod(g));
-      if (g.money < cost) return g;
-      if (g.crafting && !canParallelCraft(g)) return g;
-      if (g.crafting && canParallelCraft(g) && g.crafting.length >= 2) return g;
       const days = Math.max(1, p.time - getSpeed(g));
       const newG = { ...g, money: g.money - cost };
       if (!g.crafting) {
@@ -72,17 +77,19 @@ export default function BagBusinessTycoon() {
   };
 
   const sell = (key) => {
+    if (!game.inventory[key] || game.inventory[key] <= 0) return;
+    const p = products[key];
+    const qualityBonus = 1 + Math.min(getSkill(game) / 200, 0.5);
+    const repBonus = 1 + game.reputation / 500;
+    const price = Math.round(p.basePrice * getPriceMod(game) * qualityBonus * repBonus);
+    const newEarned = game.totalEarned + price;
+    const newRep = game.reputation + Math.floor(price / 30);
+    const won = newEarned >= 10000 && newRep >= 100;
+    playGameSound("sell");
+    if (won) playGameSound("win");
     setGame((g) => {
-      if (!g.inventory[key] || g.inventory[key] <= 0) return g;
-      const p = products[key];
-      const qualityBonus = 1 + Math.min(getSkill(g) / 200, 0.5);
-      const repBonus = 1 + g.reputation / 500;
-      const price = Math.round(p.basePrice * getPriceMod(g) * qualityBonus * repBonus);
       const inv = { ...g.inventory, [key]: g.inventory[key] - 1 };
       if (inv[key] === 0) delete inv[key];
-      const newEarned = g.totalEarned + price;
-      const newRep = g.reputation + Math.floor(price / 30);
-      const won = newEarned >= 10000 && newRep >= 100;
       addLog(t.log.sold(p.emoji, p.name, price));
       if (won) addLog(t.log.won);
       return {
@@ -95,15 +102,20 @@ export default function BagBusinessTycoon() {
   };
 
   const buyUpgrade = (key) => {
+    const u = upgrades[key];
+    if (game.upgrades[key] || game.money < u.cost) {
+      playGameSound("deny");
+      return;
+    }
+    playGameSound("upgrade");
     setGame((g) => {
-      const u = upgrades[key];
-      if (g.upgrades[key] || g.money < u.cost) return g;
       addLog(t.log.purchasedUpgrade(u.name, u.desc));
       return { ...g, money: g.money - u.cost, upgrades: { ...g.upgrades, [key]: true } };
     });
   };
 
   const nextDay = () => {
+    const followUpSounds = [];
     setGame((g) => {
       let newG = { ...g, day: g.day + 1, tempPriceMod: 0, tempCostMod: 0 };
       if (newG.crafting) {
@@ -116,6 +128,7 @@ export default function BagBusinessTycoon() {
           const p = products[c.key];
           addLog(t.log.finishedCraft(p.emoji, p.name));
           newG.skill += 2;
+          followUpSounds.push("complete");
         });
         newG.inventory = inv;
         newG.crafting = ongoing.length ? ongoing : null;
@@ -133,6 +146,7 @@ export default function BagBusinessTycoon() {
           newG.totalSold += 1;
           newG.reputation += Math.floor(price / 30);
           addLog(t.log.onlineOrder(p.emoji, p.name, price));
+          followUpSounds.push("sell");
         }
       }
       if (newG.day % 7 === 0) {
@@ -144,16 +158,23 @@ export default function BagBusinessTycoon() {
         if (ev.effect === "tempPrice") newG.tempPriceMod = ev.val;
         if (ev.effect === "tempCost") newG.tempCostMod = ev.val;
         if (ev.effect === "bonus") newG.money += ev.val;
+        followUpSounds.push("event");
       }
       if (newG.money <= 0 && !newG.crafting && Object.keys(newG.inventory).length === 0) {
         newG.gameOver = true;
         addLog(t.log.bankrupt);
+        followUpSounds.push("lose");
       }
       return newG;
+    });
+    playGameSound("tick");
+    followUpSounds.forEach((sound, i) => {
+      setTimeout(() => playGameSound(sound), 80 + i * 90);
     });
   };
 
   const restart = () => {
+    playGameSound("click");
     setGame(createInitialState());
     setLog(t.newGameLog);
   };
@@ -172,7 +193,7 @@ export default function BagBusinessTycoon() {
         marginBottom: 10, letterSpacing: 2, position: "relative",
       }}>
         <button
-          onClick={() => setShowDemo(true)}
+          onClick={() => { playGameSound("click"); setShowDemo(true); }}
           style={{
             ...btnStyle("#2a2518"), position: "absolute", left: 0, top: 8,
             fontSize: 10, padding: "4px 8px", letterSpacing: 0,
@@ -180,7 +201,8 @@ export default function BagBusinessTycoon() {
         >
           {t.howToPlay}
         </button>
-        <div style={{ position: "absolute", right: 0, top: 8 }}>
+        <div style={{ position: "absolute", right: 0, top: 8, display: "flex", gap: 4 }}>
+          <SoundToggle />
           <LanguageToggle />
         </div>
         <h1 style={{ margin: 0, fontSize: 22, color: "#c9a96e", textTransform: "uppercase" }}>

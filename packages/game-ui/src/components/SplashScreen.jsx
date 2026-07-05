@@ -2,6 +2,8 @@
 
 import { useLanguage } from "./LanguageProvider";
 import LanguageToggle from "./LanguageToggle";
+import SoundToggle from "./SoundToggle";
+import { resumeAudio, playGameSound } from "../audio/gameSounds.js";
 
 export default function SplashScreen({ onContinue }) {
   const { t } = useLanguage();
@@ -21,7 +23,8 @@ export default function SplashScreen({ onContinue }) {
         .splash-title { animation: splashGlow 3s ease-in-out infinite; }
       `}</style>
 
-      <div style={{ position: "absolute", top: 20, right: 20 }}>
+      <div style={{ position: "absolute", top: 20, right: 20, display: "flex", gap: 4 }}>
+        <SoundToggle />
         <LanguageToggle />
       </div>
 
@@ -30,7 +33,14 @@ export default function SplashScreen({ onContinue }) {
         <h1 className="splash-title" style={titleStyle}>{t.splash.headline}</h1>
         <p style={taglineStyle}>{t.splash.tagline}</p>
         <div style={pillStyle}>{t.splash.subline}</div>
-        <button onClick={onContinue} style={enterBtnStyle}>
+        <button
+          onClick={() => {
+            resumeAudio();
+            playGameSound("enter");
+            onContinue();
+          }}
+          style={enterBtnStyle}
+        >
           {t.splash.enter}
         </button>
       </div>

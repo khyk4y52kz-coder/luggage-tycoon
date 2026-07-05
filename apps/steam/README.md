@@ -22,7 +22,7 @@ npm run dev:steam      # Vite dev server + Electron
 npm run build:steam    # Vite bundle + electron-builder package
 ```
 
-Artifacts land in `.steam-build/release/` at the Grok Code workspace root (`.dmg`/`.zip` on macOS, `.exe` on Windows, `.AppImage` on Linux). This directory is gitignored and kept outside the source tree.
+Artifacts land in `.steam-build/release/` at the Grok Code workspace root (`.zip` + `.app` on macOS, `.exe` on Windows, `.AppImage` on Linux). This directory is gitignored and kept outside the source tree.
 
 Test the unpackaged production build:
 
