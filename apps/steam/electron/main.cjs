@@ -20,7 +20,7 @@ function createWindow() {
     height: 860,
     minWidth: 640,
     minHeight: 720,
-    title: "Bag Business Tycoon",
+    title: "The Little Bag Factory",
     backgroundColor: "#0e0c0a",
     show: false,
     webPreferences: {

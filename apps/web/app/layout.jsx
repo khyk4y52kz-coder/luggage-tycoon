@@ -1,8 +1,8 @@
 import "@luggage-tycoon/game-ui/styles.css";
 
 export const metadata = {
-  title: "Bag Business Tycoon",
-  description: "Craft bags, sell them, upgrade your workshop, and build a brand.",
+  title: "The Little Bag Factory",
+  description: "Craft bags, sell them, upgrade your workshop, and grow your factory.",
 };
 
 export default function RootLayout({ children }) {

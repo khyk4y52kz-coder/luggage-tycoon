@@ -1,4 +1,4 @@
-# Bag Business Tycoon — Steam (Desktop)
+# Den Lille Taskefabrik — Steam (Desktop)
 
 Desktop build sharing the same game as the web version via workspace packages:
 

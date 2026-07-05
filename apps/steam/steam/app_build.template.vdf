@@ -1,7 +1,7 @@
 "AppBuild"
 {
 	"AppID" "YOUR_APP_ID"
-	"Desc" "Bag Business Tycoon build"
+	"Desc" "Den Lille Taskefabrik build"
 	"ContentRoot" "../release/"
 	"BuildOutput" "./output/"
 	"Depots"

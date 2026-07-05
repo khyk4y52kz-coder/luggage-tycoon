@@ -46,9 +46,9 @@ const EVENT_EFFECTS = [
 export const LANG_STORAGE_KEY = "bag-tycoon-lang";
 
 const en = {
-  pageTitle: "Bag Business Tycoon",
-  pageDescription: "Craft bags, sell them, upgrade your workshop, and build a brand.",
-  title: "Bag Business Tycoon",
+  pageTitle: "The Little Bag Factory",
+  pageDescription: "Craft bags, sell them, upgrade your workshop, and grow your factory.",
+  title: "The Little Bag Factory",
   howToPlay: "❓ How to Play",
   day: "Day",
   week: "Week",
@@ -66,19 +66,19 @@ const en = {
   allPurchased: "All purchased! ✓",
   youWin: "🎉 You Win!",
   winMessage: (day, earned, sold) =>
-    `You built a thriving bag empire in ${day} days! Revenue: $${earned}, Bags sold: ${sold}`,
+    `You grew The Little Bag Factory into a thriving business in ${day} days! Revenue: $${earned}, Bags sold: ${sold}`,
   playAgain: "Play Again",
   bankrupt: "💀 Bankrupt!",
   tryAgain: "Try Again",
   splash: {
-    headline: "Welcome to Bag Business Tycoon",
-    tagline: "You have $100, a needle, and a dream. Build your bag empire from a tiny workshop to a global brand.",
+    headline: "Welcome to The Little Bag Factory",
+    tagline: "You have $100, a needle, and a dream. Grow your little bag factory from a tiny workshop into a beloved brand.",
     subline: "Craft · Sell · Upgrade · Win",
     enter: "Enter Workshop →",
   },
   welcomeLog: [
-    "Welcome to Bag Business Tycoon! You start with $100 and a dream.",
-    "Craft bags, sell them, upgrade your workshop, and build a brand.",
+    "Welcome to The Little Bag Factory! You start with $100 and a dream.",
+    "Craft bags, sell them, upgrade your workshop, and grow your factory.",
     "Goal: Earn $10,000 total revenue and reach 100 reputation to win!",
   ],
   newGameLog: ["New game started. Good luck!"],
@@ -118,7 +118,7 @@ const en = {
     startedCraft: (emoji, name, days, cost) =>
       `Started crafting ${emoji} ${name} (${days} day${days > 1 ? "s" : ""}, cost $${cost})`,
     sold: (emoji, name, price) => `Sold ${emoji} ${name} for $${price}! 💰`,
-    won: "🎉 CONGRATULATIONS! You've built a thriving bag business!",
+    won: "🎉 CONGRATULATIONS! The Little Bag Factory is thriving!",
     purchasedUpgrade: (name, desc) => `Purchased upgrade: ${name}! ${desc}`,
     finishedCraft: (emoji, name) => `Finished crafting ${emoji} ${name}! Added to inventory.`,
     onlineOrder: (emoji, name, price) => `📦 Online order! Sold ${emoji} ${name} for $${price}`,
@@ -140,11 +140,11 @@ const en = {
     tapNext: " · Tap Next → to continue, or press Play to auto-advance",
     autoAdvancing: (sec) => ` · Auto-advancing every ${sec}s (press Pause to stop)`,
     goToStep: (n) => `Go to step ${n}`,
-    youWinDemo: (day) => `🎉 You Win! Bag empire built in ${day} days!`,
+    youWinDemo: (day) => `🎉 You Win! The Little Bag Factory thrived in ${day} days!`,
     steps: [
       {
         title: "Your Goal",
-        caption: "Build a bag empire! Hit $10,000 total revenue and 100 reputation to win.",
+        caption: "Grow your bag factory! Hit $10,000 total revenue and 100 reputation to win.",
         log: ["You start with $100 and a dream."],
       },
       {
@@ -176,16 +176,16 @@ const en = {
       {
         title: "Win the Game!",
         caption: "Keep crafting, selling, and upgrading until you reach $10,000 revenue and 100 reputation. Don't go bankrupt!",
-        log: ["🎉 CONGRATULATIONS! You've built a thriving bag business!"],
+        log: ["🎉 CONGRATULATIONS! The Little Bag Factory is thriving!"],
       },
     ],
   },
 };
 
 const da = {
-  pageTitle: "Taskeforretnings Tycoon",
-  pageDescription: "Fremstil tasker, sælg dem, opgrader dit værksted og byg et brand.",
-  title: "Taskeforretnings Tycoon",
+  pageTitle: "Den Lille Taskefabrik",
+  pageDescription: "Fremstil tasker, sælg dem, opgrader dit værksted og udvid fabrikken.",
+  title: "Den Lille Taskefabrik",
   howToPlay: "❓ Sådan spiller du",
   day: "Dag",
   week: "Uge",
@@ -203,19 +203,19 @@ const da = {
   allPurchased: "Alt købt! ✓",
   youWin: "🎉 Du vandt!",
   winMessage: (day, earned, sold) =>
-    `Du byggede et blomstrende taskeimperium på ${day} dage! Omsætning: $${earned}, Tasker solgt: ${sold}`,
+    `Du gjorde Den Lille Taskefabrik til en blomstrende forretning på ${day} dage! Omsætning: $${earned}, Tasker solgt: ${sold}`,
   playAgain: "Spil igen",
   bankrupt: "💀 Bankerot!",
   tryAgain: "Prøv igen",
   splash: {
-    headline: "Velkommen til Taskeforretnings Tycoon",
-    tagline: "Du har $100, en nål og en drøm. Byg dit taskeimperium fra et lille værksted til et globalt brand.",
+    headline: "Velkommen til Den Lille Taskefabrik",
+    tagline: "Du har $100, en nål og en drøm. Udvid din lille taskefabrik fra et lille værksted til et elsket brand.",
     subline: "Fremstil · Sælg · Opgrader · Vind",
     enter: "Gå til værkstedet →",
   },
   welcomeLog: [
-    "Velkommen til Taskeforretnings Tycoon! Du starter med $100 og en drøm.",
-    "Fremstil tasker, sælg dem, opgrader dit værksted og byg et brand.",
+    "Velkommen til Den Lille Taskefabrik! Du starter med $100 og en drøm.",
+    "Fremstil tasker, sælg dem, opgrader dit værksted og udvid fabrikken.",
     "Mål: Tjen $10.000 i samlet omsætning og nå 100 i omdømme for at vinde!",
   ],
   newGameLog: ["Nyt spil startet. Held og lykke!"],
@@ -255,7 +255,7 @@ const da = {
     startedCraft: (emoji, name, days, cost) =>
       `Begyndte fremstilling af ${emoji} ${name} (${days} dag${days > 1 ? "e" : ""}, koster $${cost})`,
     sold: (emoji, name, price) => `Solgte ${emoji} ${name} for $${price}! 💰`,
-    won: "🎉 TILLYKKE! Du har bygget en blomstrende taskeforretning!",
+    won: "🎉 TILLYKKE! Den Lille Taskefabrik blomstrer!",
     purchasedUpgrade: (name, desc) => `Købte opgradering: ${name}! ${desc}`,
     finishedCraft: (emoji, name) => `Færdig med ${emoji} ${name}! Tilføjet til lager.`,
     onlineOrder: (emoji, name, price) => `📦 Onlineordre! Solgte ${emoji} ${name} for $${price}`,
@@ -277,11 +277,11 @@ const da = {
     tapNext: " · Tryk Næste → for at fortsætte, eller Afspil for automatisk afspilning",
     autoAdvancing: (sec) => ` · Auto-afspilning hvert ${sec}. sekund (tryk Pause for at stoppe)`,
     goToStep: (n) => `Gå til trin ${n}`,
-    youWinDemo: (day) => `🎉 Du vandt! Taskeimperium bygget på ${day} dage!`,
+    youWinDemo: (day) => `🎉 Du vandt! Den Lille Taskefabrik blomstrede på ${day} dage!`,
     steps: [
       {
         title: "Dit mål",
-        caption: "Byg et taskeimperium! Nå $10.000 i samlet omsætning og 100 i omdømme for at vinde.",
+        caption: "Udvid din taskefabrik! Nå $10.000 i samlet omsætning og 100 i omdømme for at vinde.",
         log: ["Du starter med $100 og en drøm."],
       },
       {
@@ -313,7 +313,7 @@ const da = {
       {
         title: "Vind spillet!",
         caption: "Bliv ved med at fremstille, sælge og opgradere indtil du når $10.000 i omsætning og 100 i omdømme. Gå ikke bankerot!",
-        log: ["🎉 TILLYKKE! Du har bygget en blomstrende taskeforretning!"],
+        log: ["🎉 TILLYKKE! Den Lille Taskefabrik blomstrer!"],
       },
     ],
   },

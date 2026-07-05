@@ -19,6 +19,6 @@ assert.ok(existsSync(jsPath), `bundled JS must exist: ${jsPath}`);
 assert.ok(statSync(jsPath).size > 10000, "bundled JS must be non-trivial size");
 
 const js = readFileSync(jsPath, "utf8");
-assert.match(js, /Bag Business Tycoon|Taskeforretnings/, "bundle must include game title strings");
+assert.match(js, /The Little Bag Factory|Den Lille Taskefabrik/, "bundle must include game title strings");
 
 console.log("verify-dist: OK");

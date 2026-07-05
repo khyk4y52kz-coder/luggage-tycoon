@@ -1,6 +1,6 @@
-# Bag Business Tycoon
+# Den Lille Taskefabrik / The Little Bag Factory
 
-Monorepo for the web and Steam desktop versions of Bag Business Tycoon.
+Monorepo for the web and Steam desktop versions of *Den Lille Taskefabrik* (Danish) / *The Little Bag Factory* (English).
 
 | App | Path | Deploy target |
 |-----|------|---------------|

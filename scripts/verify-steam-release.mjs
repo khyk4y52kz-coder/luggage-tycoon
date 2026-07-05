@@ -59,7 +59,7 @@ if (existsSync(releaseDir)) {
   const hasArtifact =
     entries.some(
       (e) => e.endsWith(".dmg") || e.endsWith(".zip") || e.endsWith(".app"),
-    ) || existsSync(join(releaseDir, "mac-arm64", "Bag Business Tycoon.app"));
+    ) || existsSync(join(releaseDir, "mac-arm64", "Den Lille Taskefabrik.app"));
   assert(hasArtifact, ".steam-build/release must contain installable artifact");
   log(`PASS step 3: release artifacts present: ${entries.join(", ")}`);
 } else {
