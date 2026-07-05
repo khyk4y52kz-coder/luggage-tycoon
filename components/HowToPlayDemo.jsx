@@ -117,7 +117,7 @@ const AUTO_INTERVAL_MS = 4000;
 
 export default function HowToPlayDemo({ onClose }) {
   const [step, setStep] = useState(0);
-  const [playing, setPlaying] = useState(true);
+  const [playing, setPlaying] = useState(false);
 
   const next = useCallback(() => {
     setStep((s) => (s + 1) % STEPS.length);
@@ -306,7 +306,20 @@ export default function HowToPlayDemo({ onClose }) {
             <button onClick={() => setPlaying((p) => !p)} style={{ ...btnStyle("#2a2518"), fontSize: 11, padding: "5px 12px" }}>
               {playing ? "⏸ Pause" : "▶ Play"}
             </button>
-            <button onClick={next} style={{ ...btnStyle("#2a2518"), fontSize: 11, padding: "5px 12px" }}>Next →</button>
+            <button
+              onClick={next}
+              className={!playing ? "demo-pulse" : ""}
+              style={{
+                ...btnStyle(!playing ? "#4a3a10" : "#2a2518"),
+                fontSize: 11,
+                padding: "5px 12px",
+                border: !playing ? "2px solid #c9a96e" : "1px solid #4a3a22",
+                position: "relative",
+              }}
+            >
+              Next →
+              {!playing && <span className="demo-cursor" style={{ ...cursorStyle, right: -8, top: -12 }}>👆</span>}
+            </button>
           </div>
 
           <div style={{ display: "flex", gap: 5 }}>
@@ -329,7 +342,10 @@ export default function HowToPlayDemo({ onClose }) {
         </div>
 
         <div style={{ textAlign: "center", marginTop: 10, fontSize: 10, color: "#5a5040" }}>
-          Step {step + 1} of {STEPS.length} · Auto-advances every {AUTO_INTERVAL_MS / 1000}s
+          Step {step + 1} of {STEPS.length}
+          {playing
+            ? ` · Auto-advancing every ${AUTO_INTERVAL_MS / 1000}s (press Pause to stop)`
+            : " · Tap Next → to continue, or press Play to auto-advance"}
         </div>
       </div>
     </div>
