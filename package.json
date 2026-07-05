@@ -14,6 +14,7 @@
     "build:steam": "npm run package -w @luggage-tycoon/steam",
     "package:steam": "npm run package -w @luggage-tycoon/steam",
     "test": "npm run test -w @luggage-tycoon/game-core",
-    "test:game-core": "npm run test -w @luggage-tycoon/game-core"
+    "test:game-core": "npm run test -w @luggage-tycoon/game-core",
+    "verify:steam": "node scripts/verify-steam-release.mjs"
   }
 }
