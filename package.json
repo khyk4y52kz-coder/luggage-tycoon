@@ -1,16 +1,16 @@
 {
-  "name": "luggage-tycoon",
-  "version": "1.3.0",
+  "name": "luggage-tycoon-monorepo",
+  "version": "1.4.0",
   "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "next": "^15.2.4",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "dev:web": "npm run dev -w @luggage-tycoon/web",
+    "build:web": "npm run build -w @luggage-tycoon/web",
+    "start:web": "npm run start -w @luggage-tycoon/web",
+    "dev:steam": "npm run dev -w @luggage-tycoon/steam",
+    "build:steam": "npm run build -w @luggage-tycoon/steam"
   }
 }

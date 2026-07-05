@@ -8,7 +8,7 @@ import {
   buildUpgrades,
   buildEvents,
   buildDemoSteps,
-} from "../lib/translations";
+} from "@luggage-tycoon/game-core";
 
 const LanguageContext = createContext(null);
 

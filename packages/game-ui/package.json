@@ -1,0 +1,17 @@
+{
+  "name": "@luggage-tycoon/game-ui",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.js",
+    "./styles.css": "./src/globals.css"
+  },
+  "dependencies": {
+    "@luggage-tycoon/game-core": "*"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}

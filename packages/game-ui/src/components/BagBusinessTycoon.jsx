@@ -5,30 +5,20 @@ import HowToPlayDemo from "./HowToPlayDemo";
 import SplashScreen from "./SplashScreen";
 import LanguageToggle from "./LanguageToggle";
 import { useLanguage } from "./LanguageProvider";
-
-const DEMO_STORAGE_KEY = "bag-tycoon-seen-demo";
-
-const initialState = () => ({
-  money: 100,
-  skill: 0,
-  reputation: 0,
-  day: 1,
-  week: 1,
-  crafting: null,
-  craftDaysLeft: 0,
-  inventory: {},
-  upgrades: {},
-  totalSold: 0,
-  totalEarned: 0,
-  tempPriceMod: 0,
-  tempCostMod: 0,
-  gameOver: false,
-  won: false,
-});
+import {
+  DEMO_STORAGE_KEY,
+  createInitialState,
+  getSpeed,
+  getSkill,
+  getPriceMod,
+  getCostMod,
+  canParallelCraft,
+  getLogColor,
+} from "@luggage-tycoon/game-core";
 
 export default function BagBusinessTycoon() {
   const { t, products, upgrades, events } = useLanguage();
-  const [game, setGame] = useState(initialState());
+  const [game, setGame] = useState(createInitialState());
   const [log, setLog] = useState([]);
   const [showSplash, setShowSplash] = useState(true);
   const [showDemo, setShowDemo] = useState(false);
@@ -60,23 +50,6 @@ export default function BagBusinessTycoon() {
 
   const addLog = useCallback((msg) => setLog((l) => [...l.slice(-80), msg]), []);
 
-  const getSpeed = (g) => (g.upgrades.sewing_machine ? 1 : 0);
-  const getSkill = (g) => {
-    let s = g.skill;
-    if (g.upgrades.leather_tools) s += 15;
-    if (g.upgrades.master_class) s += 30;
-    return s;
-  };
-  const getPriceMod = (g) => {
-    let m = 1 + g.tempPriceMod;
-    if (g.upgrades.storefront) m += 0.2;
-    if (g.upgrades.brand_deal) m += 0.4;
-    if (g.upgrades.online_store) m += 0.25;
-    return m;
-  };
-  const getCostMod = (g) => Math.max(0.5, 1 - g.tempCostMod);
-  const canParallel = (g) => !!g.upgrades.workshop;
-
   const craft = (key) => {
     setGame((g) => {
       const p = products[key];
@@ -84,8 +57,8 @@ export default function BagBusinessTycoon() {
       if (eff < p.skill) return g;
       const cost = Math.round(p.cost * getCostMod(g));
       if (g.money < cost) return g;
-      if (g.crafting && !canParallel(g)) return g;
-      if (g.crafting && canParallel(g) && g.crafting.length >= 2) return g;
+      if (g.crafting && !canParallelCraft(g)) return g;
+      if (g.crafting && canParallelCraft(g) && g.crafting.length >= 2) return g;
       const days = Math.max(1, p.time - getSpeed(g));
       const newG = { ...g, money: g.money - cost };
       if (!g.crafting) {
@@ -181,20 +154,13 @@ export default function BagBusinessTycoon() {
   };
 
   const restart = () => {
-    setGame(initialState());
+    setGame(createInitialState());
     setLog(t.newGameLog);
   };
 
   const g = game;
   const eff = getSkill(g);
   const invKeys = Object.keys(g.inventory).filter((k) => g.inventory[k] > 0);
-
-  const logColor = (line) => {
-    if (line.startsWith("---")) return "#c9a96e";
-    if (line.includes("💀")) return "#ce8080";
-    if (line.includes("🎉")) return "#90e090";
-    return "#a09880";
-  };
 
   return (
     <div className="game-panel">
@@ -282,8 +248,8 @@ export default function BagBusinessTycoon() {
                 const cost = Math.round(p.cost * getCostMod(g));
                 const locked = eff < p.skill;
                 const tooExpensive = g.money < cost;
-                const busy = g.crafting && !canParallel(g);
-                const full = g.crafting && canParallel(g) && g.crafting.length >= 2;
+                const busy = g.crafting && !canParallelCraft(g);
+                const full = g.crafting && canParallelCraft(g) && g.crafting.length >= 2;
                 const disabled = locked || tooExpensive || busy || full;
                 return (
                   <button key={k} onClick={() => craft(k)} disabled={disabled} style={{
@@ -337,7 +303,7 @@ export default function BagBusinessTycoon() {
         padding: "6px 10px", fontSize: 11, lineHeight: 1.6,
       }}>
         {log.map((l, i) => (
-          <div key={i} style={{ color: logColor(l) }}>{l}</div>
+          <div key={i} style={{ color: getLogColor(l) }}>{l}</div>
         ))}
       </div>
     </div>

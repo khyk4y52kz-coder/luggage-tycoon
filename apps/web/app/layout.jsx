@@ -1,4 +1,4 @@
-import "./globals.css";
+import "@luggage-tycoon/game-ui/styles.css";
 
 export const metadata = {
   title: "Bag Business Tycoon",

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useLanguage } from "./LanguageProvider";
-import { buildProducts } from "../lib/translations";
+import { buildProducts } from "@luggage-tycoon/game-core";
 
 const AUTO_INTERVAL_MS = 4000;
 
