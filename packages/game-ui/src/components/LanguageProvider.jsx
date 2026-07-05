@@ -12,13 +12,14 @@ import {
 
 const LanguageContext = createContext(null);
 
-export function LanguageProvider({ children }) {
-  const [lang, setLangState] = useState("en");
+function getInitialLang() {
+  if (typeof window === "undefined") return "en";
+  const saved = localStorage.getItem(LANG_STORAGE_KEY);
+  return saved === "en" || saved === "da" ? saved : "en";
+}
 
-  useEffect(() => {
-    const saved = localStorage.getItem(LANG_STORAGE_KEY);
-    if (saved === "en" || saved === "da") setLangState(saved);
-  }, []);
+export function LanguageProvider({ children }) {
+  const [lang, setLangState] = useState(getInitialLang);
 
   const setLang = useCallback((next) => {
     setLangState(next);

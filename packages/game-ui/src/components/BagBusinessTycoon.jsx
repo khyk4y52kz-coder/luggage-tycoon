@@ -25,21 +25,28 @@ export default function BagBusinessTycoon() {
   const [showSplash, setShowSplash] = useState(true);
   const [showDemo, setShowDemo] = useState(false);
   const logRef = useRef(null);
-  const logInitialized = useRef(false);
 
   useEffect(() => {
-    if (!logInitialized.current) {
+    const pristine =
+      game.day === 1 &&
+      game.totalSold === 0 &&
+      game.totalEarned === 0 &&
+      game.money === 100 &&
+      !game.crafting &&
+      !game.won &&
+      !game.gameOver;
+    if (showSplash || pristine) {
       setLog(t.welcomeLog);
-      logInitialized.current = true;
     }
-  }, [t]);
+  }, [t, showSplash, game.day, game.totalSold, game.totalEarned, game.money, game.crafting, game.won, game.gameOver]);
 
   const handleSplashContinue = useCallback(() => {
+    setLog(t.welcomeLog);
     setShowSplash(false);
     if (typeof window !== "undefined" && !localStorage.getItem(DEMO_STORAGE_KEY)) {
       setShowDemo(true);
     }
-  }, []);
+  }, [t]);
 
   const closeDemo = useCallback(() => {
     setShowDemo(false);
