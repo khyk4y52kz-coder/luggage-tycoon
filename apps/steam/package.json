@@ -37,11 +37,15 @@
     "productName": "Bag Business Tycoon",
     "copyright": "Copyright © 2026 Bag Business Tycoon",
     "directories": {
-      "output": "release",
+      "output": "../../../.steam-build/release",
       "buildResources": "build"
     },
     "files": [
-      "dist/**/*",
+      {
+        "from": "../../../.steam-build/dist",
+        "to": "dist",
+        "filter": ["**/*"]
+      },
       "electron/**/*",
       "package.json"
     ],

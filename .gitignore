@@ -9,8 +9,6 @@ node_modules
 
 # production
 /build
-apps/steam/dist
-apps/steam/release
 
 # misc
 .DS_Store

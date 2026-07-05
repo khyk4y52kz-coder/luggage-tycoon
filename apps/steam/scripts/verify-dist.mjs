@@ -4,7 +4,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const distDir = join(__dirname, "../dist");
+const distDir = join(__dirname, "../../../../.steam-build/dist");
 const indexHtml = join(distDir, "index.html");
 
 assert.ok(existsSync(indexHtml), "dist/index.html must exist");

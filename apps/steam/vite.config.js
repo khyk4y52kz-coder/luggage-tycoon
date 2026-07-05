@@ -4,6 +4,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const STEAM_BUILD_ROOT = path.join(__dirname, "../../../.steam-build");
 
 export default defineConfig({
   base: "./",
@@ -12,7 +13,7 @@ export default defineConfig({
   publicDir: path.join(__dirname, "public"),
   server: { port: 5173, strictPort: true },
   build: {
-    outDir: path.join(__dirname, "dist"),
+    outDir: path.join(STEAM_BUILD_ROOT, "dist"),
     emptyOutDir: true,
   },
   resolve: {
