@@ -1,5 +1,10 @@
 import BagBusinessTycoon from "../components/BagBusinessTycoon";
+import { LanguageProvider } from "../components/LanguageProvider";
 
 export default function Home() {
-  return <BagBusinessTycoon />;
+  return (
+    <LanguageProvider>
+      <BagBusinessTycoon />
+    </LanguageProvider>
+  );
 }

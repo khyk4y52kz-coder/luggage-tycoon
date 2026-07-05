@@ -1,131 +1,25 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-
-const STEPS = [
-  {
-    title: "Your Goal",
-    caption: "Build a bag empire! Hit $10,000 total revenue and 100 reputation to win.",
-    highlight: "stats",
-    mock: {
-      money: 100,
-      revenue: 0,
-      rep: 0,
-      day: 1,
-      crafting: null,
-      inventory: [],
-      log: ["You start with $100 and a dream."],
-      pulse: null,
-    },
-  },
-  {
-    title: "Step 1 — Craft a Bag",
-    caption: "Pick a product from the Craft section. Canvas Tote costs $8 and takes 1 day — perfect to start.",
-    highlight: "craft",
-    mock: {
-      money: 92,
-      revenue: 0,
-      rep: 0,
-      day: 1,
-      crafting: [{ emoji: "👜", name: "Canvas Tote", daysLeft: 1 }],
-      inventory: [],
-      log: ["Started crafting 👜 Canvas Tote (1 day, cost $8)"],
-      pulse: "craft-btn",
-    },
-  },
-  {
-    title: "Step 2 — Advance Time",
-    caption: "Press NEXT DAY to pass time. Crafting finishes automatically when the timer hits zero.",
-    highlight: "nextday",
-    mock: {
-      money: 92,
-      revenue: 0,
-      rep: 0,
-      day: 2,
-      crafting: null,
-      inventory: [{ emoji: "👜", name: "Canvas Tote", count: 1 }],
-      log: ["Finished crafting 👜 Canvas Tote! Added to inventory.", "+2 skill"],
-      pulse: "nextday-btn",
-    },
-  },
-  {
-    title: "Step 3 — Sell Your Bags",
-    caption: "Click items in Inventory to sell them. Higher skill and reputation boost your sale price.",
-    highlight: "inventory",
-    mock: {
-      money: 114,
-      revenue: 22,
-      rep: 0,
-      day: 2,
-      crafting: null,
-      inventory: [],
-      log: ["Sold 👜 Canvas Tote for $22! 💰", "+1 skill"],
-      pulse: "sell-btn",
-    },
-  },
-  {
-    title: "Step 4 — Buy Upgrades",
-    caption: "Reinvest profits in upgrades — faster crafting, better prices, and passive online orders.",
-    highlight: "upgrades",
-    mock: {
-      money: 64,
-      revenue: 22,
-      rep: 0,
-      day: 5,
-      crafting: null,
-      inventory: [],
-      upgrades: ["Sewing Machine"],
-      log: ["Purchased upgrade: Sewing Machine! −1 day per craft"],
-      pulse: "upgrade-btn",
-    },
-  },
-  {
-    title: "Step 5 — Scale Up",
-    caption: "Unlock pricier bags as your skill grows. Watch for weekly events — they can help or hurt!",
-    highlight: "craft",
-    mock: {
-      money: 340,
-      revenue: 4200,
-      rep: 48,
-      day: 28,
-      week: 4,
-      crafting: [{ emoji: "🧳", name: "Weekender Bag", daysLeft: 1 }],
-      inventory: [{ emoji: "💼", name: "Laptop Sleeve", count: 2 }],
-      log: ["--- Week 4 Event: A travel blogger featured your bags!", "Started crafting 🧳 Weekender Bag"],
-      pulse: "craft-advanced",
-    },
-  },
-  {
-    title: "Win the Game!",
-    caption: "Keep crafting, selling, and upgrading until you reach $10,000 revenue and 100 reputation. Don't go bankrupt!",
-    highlight: "win",
-    mock: {
-      money: 2840,
-      revenue: 10000,
-      rep: 100,
-      day: 62,
-      crafting: null,
-      inventory: [],
-      won: true,
-      log: ["🎉 CONGRATULATIONS! You've built a thriving bag business!"],
-      pulse: null,
-    },
-  },
-];
+import { useLanguage } from "./LanguageProvider";
+import { buildProducts } from "../lib/translations";
 
 const AUTO_INTERVAL_MS = 4000;
 
 export default function HowToPlayDemo({ onClose }) {
+  const { t, lang, demoSteps } = useLanguage();
+  const products = buildProducts(lang);
+  const upgrades = buildUpgrades(lang);
   const [step, setStep] = useState(0);
   const [playing, setPlaying] = useState(false);
 
   const next = useCallback(() => {
-    setStep((s) => (s + 1) % STEPS.length);
-  }, []);
+    setStep((s) => (s + 1) % demoSteps.length);
+  }, [demoSteps.length]);
 
   const prev = useCallback(() => {
-    setStep((s) => (s - 1 + STEPS.length) % STEPS.length);
-  }, []);
+    setStep((s) => (s - 1 + demoSteps.length) % demoSteps.length);
+  }, [demoSteps.length]);
 
   useEffect(() => {
     if (!playing) return;
@@ -133,7 +27,7 @@ export default function HowToPlayDemo({ onClose }) {
     return () => clearInterval(id);
   }, [playing, next]);
 
-  const current = STEPS[step];
+  const current = demoSteps[step];
   const mock = current.mock;
 
   return (
@@ -160,12 +54,12 @@ export default function HowToPlayDemo({ onClose }) {
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
           <div>
             <div style={{ fontSize: 11, color: "#8a7a60", textTransform: "uppercase", letterSpacing: 1 }}>
-              How to Play — Visual Demo
+              {t.demo.subtitle}
             </div>
             <h2 style={{ margin: "4px 0 0", fontSize: 18, color: "#c9a96e" }}>{current.title}</h2>
           </div>
           <button onClick={onClose} style={{ ...btnStyle("#3a3020"), fontSize: 11, padding: "4px 10px" }}>
-            ✕ Close
+            {t.demo.close}
           </button>
         </div>
 
@@ -178,7 +72,7 @@ export default function HowToPlayDemo({ onClose }) {
           padding: 12, marginBottom: 14, position: "relative",
         }}>
           <div style={{ fontSize: 10, color: "#6a5a40", marginBottom: 8, textAlign: "center" }}>
-            — Live preview —
+            {t.demo.livePreview}
           </div>
 
           <div style={{
@@ -188,26 +82,26 @@ export default function HowToPlayDemo({ onClose }) {
             ...(current.highlight === "stats" ? { boxShadow: "0 0 12px rgba(201,169,110,0.3)" } : {}),
           }}>
             <span>💰 <b style={{ color: "#6dce6d" }}>${mock.money}</b></span>
-            <span>💵 Revenue: <b style={{ color: mock.revenue >= 10000 ? "#ffd700" : "#c9a96e" }}>${mock.revenue}</b>/10k</span>
-            <span>⭐ Rep: <b style={{ color: mock.rep >= 100 ? "#ffd700" : "#c9a96e" }}>{mock.rep}</b>/100</span>
-            <span>Day {mock.day}{mock.week ? ` · Week ${mock.week}` : ""}</span>
+            <span>💵 {t.revenue}: <b style={{ color: mock.revenue >= 10000 ? "#ffd700" : "#c9a96e" }}>${mock.revenue}</b>/10k</span>
+            <span>⭐ {t.rep}: <b style={{ color: mock.rep >= 100 ? "#ffd700" : "#c9a96e" }}>{mock.rep}</b>/100</span>
+            <span>{t.day} {mock.day}{mock.week ? ` · ${t.week} ${mock.week}` : ""}</span>
           </div>
 
           {mock.won && (
             <div style={{ textAlign: "center", background: "#2a3a1a", border: "2px solid #6dce6d", borderRadius: 4, padding: 10, marginBottom: 8, fontSize: 13 }}>
-              🎉 You Win! Bag empire built in {mock.day} days!
+              {t.demo.youWinDemo(mock.day)}
             </div>
           )}
 
           {mock.crafting && (
             <div style={{ background: "#1e2a1e", border: "1px solid #3a5a3a", borderRadius: 4, padding: "5px 8px", marginBottom: 8, fontSize: 11 }}>
-              🔨 Crafting: {mock.crafting.map((c) => `${c.emoji} ${c.name} (${c.daysLeft}d left)`).join(" · ")}
+              🔨 {t.crafting}: {mock.crafting.map((c) => `${c.emoji} ${c.name} (${t.daysLeft(c.daysLeft)})`).join(" · ")}
             </div>
           )}
 
           {mock.inventory?.length > 0 && (
             <div style={{ marginBottom: 8 }}>
-              <div style={{ fontSize: 10, color: "#8a7a60", marginBottom: 4, textTransform: "uppercase" }}>Inventory</div>
+              <div style={{ fontSize: 10, color: "#8a7a60", marginBottom: 4, textTransform: "uppercase" }}>{t.demo.inventory}</div>
               <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
                 {mock.inventory.map((item) => (
                   <div
@@ -228,7 +122,7 @@ export default function HowToPlayDemo({ onClose }) {
           )}
 
           <div style={{ marginBottom: 8 }}>
-            <div style={{ fontSize: 10, color: "#8a7a60", marginBottom: 4, textTransform: "uppercase" }}>Craft</div>
+            <div style={{ fontSize: 10, color: "#8a7a60", marginBottom: 4, textTransform: "uppercase" }}>{t.craft}</div>
             <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
               <div
                 className={mock.pulse === "craft-btn" ? "demo-pulse" : ""}
@@ -238,15 +132,18 @@ export default function HowToPlayDemo({ onClose }) {
                   position: "relative",
                 }}
               >
-                👜 <b>Canvas Tote</b> <span style={{ color: "#8a7a60" }}>$8 · 1d</span>
+                {products.canvas_tote.emoji} <b>{products.canvas_tote.name}</b>{" "}
+                <span style={{ color: "#8a7a60" }}>$8 · 1d</span>
                 {mock.pulse === "craft-btn" && <span className="demo-cursor" style={cursorStyle}>👆</span>}
               </div>
               <div style={{ ...btnStyle("#2a2a2a"), fontSize: 11, padding: "5px 8px", opacity: 0.45 }}>
-                💼 <b>Laptop Sleeve</b> <span style={{ color: "#8a7a60" }}>🔒 skill 5</span>
+                {products.laptop_sleeve.emoji} <b>{products.laptop_sleeve.name}</b>{" "}
+                <span style={{ color: "#8a7a60" }}>{t.lockedSkill(5)}</span>
               </div>
               {mock.pulse === "craft-advanced" && (
                 <div className="demo-pulse" style={{ ...btnStyle("#2a2518"), fontSize: 11, padding: "5px 8px", border: "2px solid #c9a96e", position: "relative" }}>
-                  🧳 <b>Weekender Bag</b> <span style={{ color: "#8a7a60" }}>$25 · 1d</span>
+                  {products.weekender.emoji} <b>{products.weekender.name}</b>{" "}
+                  <span style={{ color: "#8a7a60" }}>$25 · 1d</span>
                   <span className="demo-cursor" style={cursorStyle}>👆</span>
                 </div>
               )}
@@ -255,14 +152,14 @@ export default function HowToPlayDemo({ onClose }) {
 
           {mock.upgrades?.length > 0 && (
             <div style={{ marginBottom: 8 }}>
-              <div style={{ fontSize: 10, color: "#8a7a60", marginBottom: 4, textTransform: "uppercase" }}>Upgrades owned</div>
+              <div style={{ fontSize: 10, color: "#8a7a60", marginBottom: 4, textTransform: "uppercase" }}>{t.demo.upgradesOwned}</div>
               <div style={{ fontSize: 11, color: "#90c090" }}>✓ {mock.upgrades.join(", ")}</div>
             </div>
           )}
 
-          {current.highlight === "upgrades" && (
+          {current.highlight === "upgrades" && current.upgradeName && (
             <div style={{ marginBottom: 8 }}>
-              <div style={{ fontSize: 10, color: "#8a7a60", marginBottom: 4, textTransform: "uppercase" }}>Upgrades</div>
+              <div style={{ fontSize: 10, color: "#8a7a60", marginBottom: 4, textTransform: "uppercase" }}>{t.upgradesLabel}</div>
               <div
                 className={mock.pulse === "upgrade-btn" ? "demo-pulse" : ""}
                 style={{
@@ -270,7 +167,7 @@ export default function HowToPlayDemo({ onClose }) {
                   border: "2px solid #c9a96e", position: "relative",
                 }}
               >
-                ⬆ Sewing Machine — $150 <span style={{ color: "#7a7a9a" }}>(−1 day per craft)</span>
+                ⬆ {current.upgradeName} — $150 <span style={{ color: "#7a7a9a" }}>({current.upgradeDesc})</span>
                 {mock.pulse === "upgrade-btn" && <span className="demo-cursor" style={cursorStyle}>👆</span>}
               </div>
             </div>
@@ -284,7 +181,7 @@ export default function HowToPlayDemo({ onClose }) {
               position: "relative", marginBottom: 8,
             }}
           >
-            ⏭ NEXT DAY
+            {t.nextDay}
             {mock.pulse === "nextday-btn" && <span className="demo-cursor" style={{ ...cursorStyle, right: "30%" }}>👆</span>}
           </div>
 
@@ -300,11 +197,11 @@ export default function HowToPlayDemo({ onClose }) {
           </div>
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, flexWrap: "wrap" }}>
           <div style={{ display: "flex", gap: 6 }}>
-            <button onClick={prev} style={{ ...btnStyle("#2a2518"), fontSize: 11, padding: "5px 12px" }}>← Prev</button>
+            <button onClick={prev} style={{ ...btnStyle("#2a2518"), fontSize: 11, padding: "5px 12px" }}>{t.demo.prev}</button>
             <button onClick={() => setPlaying((p) => !p)} style={{ ...btnStyle("#2a2518"), fontSize: 11, padding: "5px 12px" }}>
-              {playing ? "⏸ Pause" : "▶ Play"}
+              {playing ? t.demo.pause : t.demo.play}
             </button>
             <button
               onClick={next}
@@ -317,13 +214,13 @@ export default function HowToPlayDemo({ onClose }) {
                 position: "relative",
               }}
             >
-              Next →
+              {t.demo.next}
               {!playing && <span className="demo-cursor" style={{ ...cursorStyle, right: -8, top: -12 }}>👆</span>}
             </button>
           </div>
 
           <div style={{ display: "flex", gap: 5 }}>
-            {STEPS.map((_, i) => (
+            {demoSteps.map((_, i) => (
               <button
                 key={i}
                 onClick={() => setStep(i)}
@@ -331,21 +228,19 @@ export default function HowToPlayDemo({ onClose }) {
                   width: 8, height: 8, borderRadius: "50%", border: "none", padding: 0, cursor: "pointer",
                   background: i === step ? "#c9a96e" : "#3a3020",
                 }}
-                aria-label={`Go to step ${i + 1}`}
+                aria-label={t.demo.goToStep(i + 1)}
               />
             ))}
           </div>
 
           <button onClick={onClose} style={{ ...btnStyle("#5a8a3a"), fontSize: 12, padding: "6px 14px" }}>
-            Start Playing →
+            {t.demo.startPlaying}
           </button>
         </div>
 
         <div style={{ textAlign: "center", marginTop: 10, fontSize: 10, color: "#5a5040" }}>
-          Step {step + 1} of {STEPS.length}
-          {playing
-            ? ` · Auto-advancing every ${AUTO_INTERVAL_MS / 1000}s (press Pause to stop)`
-            : " · Tap Next → to continue, or press Play to auto-advance"}
+          {t.demo.stepOf(step + 1, demoSteps.length)}
+          {playing ? t.demo.autoAdvancing(AUTO_INTERVAL_MS / 1000) : t.demo.tapNext}
         </div>
       </div>
     </div>
