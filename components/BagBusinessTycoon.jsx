@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef, useEffect } from "react";
 import HowToPlayDemo from "./HowToPlayDemo";
+import SplashScreen from "./SplashScreen";
 import LanguageToggle from "./LanguageToggle";
 import { useLanguage } from "./LanguageProvider";
 
@@ -29,6 +30,7 @@ export default function BagBusinessTycoon() {
   const { t, products, upgrades, events } = useLanguage();
   const [game, setGame] = useState(initialState());
   const [log, setLog] = useState([]);
+  const [showSplash, setShowSplash] = useState(true);
   const [showDemo, setShowDemo] = useState(false);
   const logRef = useRef(null);
   const logInitialized = useRef(false);
@@ -40,7 +42,8 @@ export default function BagBusinessTycoon() {
     }
   }, [t]);
 
-  useEffect(() => {
+  const handleSplashContinue = useCallback(() => {
+    setShowSplash(false);
     if (typeof window !== "undefined" && !localStorage.getItem(DEMO_STORAGE_KEY)) {
       setShowDemo(true);
     }
@@ -195,6 +198,7 @@ export default function BagBusinessTycoon() {
 
   return (
     <div className="game-panel">
+      {showSplash && <SplashScreen onContinue={handleSplashContinue} />}
       {showDemo && <HowToPlayDemo onClose={closeDemo} />}
 
       <div style={{
