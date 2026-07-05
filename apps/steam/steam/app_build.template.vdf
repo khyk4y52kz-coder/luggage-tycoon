@@ -1,0 +1,11 @@
+"AppBuild"
+{
+	"AppID" "YOUR_APP_ID"
+	"Desc" "Bag Business Tycoon build"
+	"ContentRoot" "../release/"
+	"BuildOutput" "./output/"
+	"Depots"
+	{
+		"YOUR_DEPOT_ID" "depot_build_mac.template.vdf"
+	}
+}

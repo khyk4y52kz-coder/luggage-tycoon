@@ -1,0 +1,12 @@
+"DepotBuild"
+{
+	"DepotID" "YOUR_DEPOT_ID"
+	"ContentRoot" "../release/mac-arm64/"
+	"FileMapping"
+	{
+		"LocalPath" "*"
+		"DepotPath" "."
+		"recursive" "1"
+	}
+	"FileExclusion" "*.blockmap"
+}

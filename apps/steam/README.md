@@ -65,9 +65,21 @@ STEAM_APP_ID=YOUR_APP_ID npm run start:prod
 ### 4. Upload to Steam
 
 1. Install [SteamCMD](https://developer.valvesoftware.com/wiki/SteamCMD)
-2. Create depots in the partner portal (Windows / macOS / Linux)
-3. Upload packaged builds from `release/` via SteamPipe
-4. Configure store page, pricing, and release branch
+2. Create depots in the partner portal (Windows / macOS / Linux) and note your **Depot IDs**
+3. Copy and fill in the templates in `steam/`:
+   - `app_build.template.vdf` — set `YOUR_APP_ID` and depot IDs
+   - `depot_build_mac.template.vdf` — set `YOUR_DEPOT_ID` (adjust `ContentRoot` per platform)
+4. Upload packaged builds from `release/`:
+
+```bash
+steamcmd +login YOUR_STEAM_USERNAME \
+  +run_app_build_http steam/app_build.vdf \
+  +quit
+```
+
+5. Configure store page, pricing, and release branch in the partner portal
+
+For local Steam client testing, `steam/steam_appid.txt` contains test App ID **480**.
 
 ## File map
 
