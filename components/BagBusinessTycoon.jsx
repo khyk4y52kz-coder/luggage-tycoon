@@ -194,11 +194,7 @@ export default function BagBusinessTycoon() {
   };
 
   return (
-    <div style={{
-      minHeight: "100vh", background: "#1a1410", color: "#e8dcc8",
-      fontFamily: "'Courier New', Courier, monospace", padding: "12px",
-      display: "flex", flexDirection: "column", maxWidth: 720, margin: "0 auto",
-    }}>
+    <div className="game-panel">
       {showDemo && <HowToPlayDemo onClose={closeDemo} />}
 
       <div style={{
