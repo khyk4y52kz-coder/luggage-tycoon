@@ -1,6 +1,9 @@
 "use client";
 
 import { useState, useCallback, useRef, useEffect } from "react";
+import HowToPlayDemo from "./HowToPlayDemo";
+
+const DEMO_STORAGE_KEY = "bag-tycoon-seen-demo";
 
 const PRODUCTS = {
   canvas_tote: { name: "Canvas Tote", cost: 8, basePrice: 22, skill: 0, time: 1, emoji: "👜" },
@@ -58,7 +61,19 @@ const initialState = () => ({
 export default function BagBusinessTycoon() {
   const [game, setGame] = useState(initialState());
   const [log, setLog] = useState(["Welcome to Bag Business Tycoon! You start with $100 and a dream.", "Craft bags, sell them, upgrade your workshop, and build a brand.", "Goal: Earn $10,000 total revenue and reach 100 reputation to win!"]);
+  const [showDemo, setShowDemo] = useState(false);
   const logRef = useRef(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && !localStorage.getItem(DEMO_STORAGE_KEY)) {
+      setShowDemo(true);
+    }
+  }, []);
+
+  const closeDemo = useCallback(() => {
+    setShowDemo(false);
+    localStorage.setItem(DEMO_STORAGE_KEY, "1");
+  }, []);
 
   useEffect(() => {
     if (logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight;
@@ -198,10 +213,21 @@ export default function BagBusinessTycoon() {
       fontFamily: "'Courier New', Courier, monospace", padding: "12px",
       display: "flex", flexDirection: "column", maxWidth: 720, margin: "0 auto",
     }}>
+      {showDemo && <HowToPlayDemo onClose={closeDemo} />}
+
       <div style={{
         textAlign: "center", padding: "10px 0 6px", borderBottom: "2px solid #5a4a32",
-        marginBottom: 10, letterSpacing: 2,
+        marginBottom: 10, letterSpacing: 2, position: "relative",
       }}>
+        <button
+          onClick={() => setShowDemo(true)}
+          style={{
+            ...btnStyle("#2a2518"), position: "absolute", right: 0, top: 8,
+            fontSize: 10, padding: "4px 8px", letterSpacing: 0,
+          }}
+        >
+          ❓ How to Play
+        </button>
         <h1 style={{ margin: 0, fontSize: 22, color: "#c9a96e", textTransform: "uppercase" }}>
           🧳 Bag Business Tycoon
         </h1>
